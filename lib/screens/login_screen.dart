@@ -19,14 +19,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: ProgressHUD(
-              child: Builder(builder: (context) => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+        child: Builder(
+          builder: (context) => Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
                 Flexible(
-                    child: Hero(
+                  child: Hero(
                     tag: 'logo',
                     child: Container(
                       height: 200.0,
@@ -44,8 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     //Do something with the user input.
                     email = value;
                   },
-                  decoration:
-                      kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your email'),
                 ),
                 SizedBox(
                   height: 8.0,
@@ -67,14 +68,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.lightBlueAccent,
                   onpressed: () async {
                     final progress = ProgressHUD.of(context);
-                        progress?.showWithText('Loading...');
-                        Future.delayed(Duration(seconds: 2), () {
-                          progress?.dismiss();
-                        });
+                    progress?.showWithText('Loading...');
+                    Future.delayed(Duration(seconds: 2), () {
+                      progress?.dismiss();
+                    });
                     try {
-                     await _auth.signInWithEmailAndPassword(
+                      await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
-                        Navigator.pushNamed(context, ChatScreen.id);
+                      Navigator.pushNamed(context, ChatScreen.id);
                     } catch (e) {
                       print(e);
                     }
@@ -82,10 +83,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     //Implement login functionality.
                   },
                 )
-            ],
+              ],
+            ),
           ),
         ),
-              ),
       ),
     );
   }

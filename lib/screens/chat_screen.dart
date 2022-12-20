@@ -34,7 +34,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,37 +101,38 @@ class MessageStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('messages').snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.lightBlueAccent,
-              ),
-            );
-          }
-          final messages = snapshot.data!.docs.reversed;
-          List<MessageBubble> messageBubbles = [];
-          for (var message in messages) {
-            final messageText = (message.data() as dynamic)['text'];
-            final messageSender = (message.data() as dynamic)['sender'];
-            final currentUser = loggedInUser.email;
-
-            final messageBubble = MessageBubble(
-              sender: messageSender,
-              text: messageText,
-              isme: currentUser == messageSender,
-            );
-            messageBubbles.add(messageBubble);
-          }
-          return Expanded(
-            child: ListView(
-              reverse: true,
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              children: messageBubbles,
+      stream: _firestore.collection('messages').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlueAccent,
             ),
           );
-        });
+        }
+        final messages = snapshot.data!.docs.reversed;
+        List<MessageBubble> messageBubbles = [];
+        for (var message in messages) {
+          final messageText = (message.data() as dynamic)['text'];
+          final messageSender = (message.data() as dynamic)['sender'];
+          final currentUser = loggedInUser.email;
+
+          final messageBubble = MessageBubble(
+            sender: messageSender,
+            text: messageText,
+            isme: currentUser == messageSender,
+          );
+          messageBubbles.add(messageBubble);
+        }
+        return Expanded(
+          child: ListView(
+            reverse: true,
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            children: messageBubbles,
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -148,7 +148,8 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: isme ? CrossAxisAlignment.end: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isme ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
@@ -158,17 +159,19 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
           Material(
-            borderRadius: isme ? BorderRadius.only(
-              topLeft: Radius.circular(30.0),
-              bottomLeft: Radius.circular(30.0),
-              bottomRight: Radius.circular(30.0),
-            ) : BorderRadius.only(
-              topRight: Radius.circular(30.0),
-              bottomLeft: Radius.circular(30.0),
-              bottomRight: Radius.circular(30.0),
-            ),
+            borderRadius: isme
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0),
+                  )
+                : BorderRadius.only(
+                    topRight: Radius.circular(30.0),
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0),
+                  ),
             elevation: 5.0,
-            color: isme? Colors.lightBlueAccent : Colors.white,
+            color: isme ? Colors.lightBlueAccent : Colors.white,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Text(
